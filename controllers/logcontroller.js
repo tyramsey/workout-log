@@ -4,12 +4,7 @@ const validateSession = require('../middleware/validate-session');
 const Log = require('../db').import('../models/log');
 
 
-router.get('/practice', validateSession, function(req, res)
-{
-    res.send('This is a practice route!')
-});
-
-router.get('/about', function(req, res){
+router.get('/about', validateSession, function(req, res){
     res.send('Maybe I can get the hang of this!')
 });
 
@@ -42,7 +37,7 @@ router.get("/", (req, res) => {
 });
 
 /* *****************************
-*** GET ALL ENTRIES BY USER ***
+*** GET ALL LOGS BY INDIVIDUAL USER ***
 ***************************** */
 router.get('/log/', validateSession, (req, res) =>{
     let userid = req.user.id
@@ -54,13 +49,13 @@ router.get('/log/', validateSession, (req, res) =>{
 });
 
 /* ****************************
-*** GET LOGS BY TITLE ***
+*** GET LOGS BY ID ***
 ***************************** */
 router.get('/log/:id', function (req, res) {
-    let title = req.params.title;
+    let userid = req.params.log;
 
     Log.findAll({
-        where: {title: title}
+        where: {log: log}
     })
     .then(logs => res.status(500).json(logs))
     .catch(err => res.status(500).json({error: err}))
